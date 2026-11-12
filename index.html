@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<title>市長ゲーム ひかり市の5年間</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+:root{--bg:#eaf1ef;--card:#fff;--ink:#16302c;--sub:#5b716d;--line:#cfdcd8;--acc:#0e8a8c;--on:#fff;--warn:#c9482f;--gold:#d99a14;--good:#1f8a4c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1c1a;--card:#172a27;--ink:#e6f2ef;--sub:#9bb3ae;--line:#2b4540;--acc:#35c0c2;--on:#06201f;--warn:#ff7d62;--gold:#f0b73a;--good:#4fd08a}}
+:root[data-theme="dark"]{--bg:#0f1c1a;--card:#172a27;--ink:#e6f2ef;--sub:#9bb3ae;--line:#2b4540;--acc:#35c0c2;--on:#06201f;--warn:#ff7d62;--gold:#f0b73a;--good:#4fd08a}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:var(--bg);color:var(--ink)}
+body{font-family:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;font-weight:500;line-height:1.6;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+#app{max-width:980px;margin:0 auto;padding:12px 14px 0}
+h1{font-size:2.1rem;font-weight:900;margin:.3em 0}
+h2{font-size:1.05rem;font-weight:900;margin:.2em 0 .5em}
+small{color:var(--sub)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:900}
+.dots{display:flex;gap:6px}.dots i{width:26px;height:8px;border-radius:4px;background:var(--line)}.dots i.d{background:var(--acc)}.dots i.c{background:var(--gold)}
+.phase{border-radius:12px;padding:10px 14px;margin:8px 0;display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;border-left:8px solid var(--acc);background:var(--card)}
+.p0{border-color:var(--warn)}.p2{border-color:var(--gold)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.st .n{font-size:.8rem;color:var(--sub);display:block}.st b{font-size:1.5rem;font-weight:900}.st em{font-style:normal;font-size:.75rem;color:var(--sub);margin-left:4px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row{display:grid;grid-template-columns:1fr minmax(200px,250px);gap:6px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.rn b{display:block;font-weight:900}.rn small{font-size:.75rem}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+.seg button{min-height:54px;border:2px solid var(--line);background:var(--bg);border-radius:10px;padding:2px;font-weight:900;line-height:1.2}
+.seg button small{display:block;font-size:.7rem;font-weight:500}
+.seg button.on{background:var(--acc);border-color:var(--acc);color:var(--on)}.seg button.on small{color:var(--on)}
+.seg button:disabled{opacity:.35}
+.bar{position:sticky;bottom:0;background:var(--card);border-top:2px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));margin:0 -14px;display:flex;gap:14px;align-items:center;justify-content:space-between}
+#pv b{font-size:1.5rem;font-weight:900}.neg{color:var(--warn)}.pos{color:var(--good)}
+.go{min-height:56px;padding:0 28px;border:0;border-radius:14px;background:var(--acc);color:var(--on);font-weight:900;font-size:1.1rem}
+.chg{display:grid;grid-template-columns:5.5em 1fr auto;gap:4px 10px;align-items:center}
+.chg b.up{color:var(--good)}.chg b.dn{color:var(--warn)}
+ul{margin:.3em 0;padding-left:1.2em}li{margin:.4em 0}
+.big{font-size:3rem;font-weight:900;color:var(--acc);line-height:1}
+.ctr{text-align:center;padding:24px 0}
+input{-webkit-user-select:text;user-select:text}
+.nm{font:inherit;font-weight:900;font-size:1.3rem;text-align:center;width:100%;max-width:320px;min-height:52px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:0 12px}
+.ic{display:flex;gap:10px;justify-content:center;margin:10px 0 18px}.ic button{width:96px;min-height:104px;border:2px solid var(--line);background:var(--card);border-radius:14px;font-weight:900}.ic button span{display:block;font-size:2.4rem;line-height:1.3}.ic button.on{border-color:var(--acc);background:var(--acc);color:var(--on)}
+.scene{border-radius:14px;overflow:hidden;margin:8px 0 12px;border:1px solid var(--line)}.scene svg{display:block;width:100%;height:auto}
+.st{display:flex;gap:10px;align-items:center}.st>div{min-width:0}
+.ring{flex:none;width:50px;height:50px;border-radius:50%;padding:5px;background:conic-gradient(var(--c,var(--acc)) calc(var(--p)*1%),var(--line) 0)}
+.ring span{width:100%;height:100%;border-radius:50%;background:var(--card);display:grid;place-items:center;font-size:1.35rem}
+.bb{height:10px;border-radius:5px;margin:3px 0}.bi{background:var(--acc)}.bo{background:var(--gold)}.bl{font-size:.75rem;color:var(--sub);display:flex;justify-content:space-between}
+#pv{flex:1;max-width:420px}.rd{display:flex;justify-content:center}
+@media(max-width:700px){.cols{grid-template-columns:1fr}.row{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+
+</style></head><body><div id="app"></div>
+<script>
+"use strict";
+const $=s=>document.querySelector(s), cl=n=>Math.max(0,Math.min(100,n));
+const PH=[["不況","企業の売上が落ち、仕事を失う人が増えています。"],["平常","景気は落ち着いています。"],["過熱","好景気で物価が上がり、暮らしにくいと感じる人も。"]];
+const SEQ=[0,1,2,0,2], SHOCK=[-10,0,10];
+// e = 各段階の効果 [景気, 満足度, 公平感]
+const TX=[
+ {k:"res",i:"👤",n:"住民税(個人)",t:"直接税・所得が高いほど負担大",rev:[22,30,38],e:[[2,2,-4],[0,0,0],[-3,-3,5]]},
+ {k:"corp",i:"🏭",n:"法人住民税(企業)",t:"直接税・企業の利益にかかる",rev:[10,16,22],e:[[3,0,-1],[0,0,0],[-5,-1,2]]},
+ {k:"vat",i:"🛒",n:"地方消費税",t:"間接税・買い物のたびにかかる",rev:[12,22,32],e:[[1,1,3],[0,0,0],[-4,-3,-6]]}];
+const SP=[
+ {k:"pub",i:"🏗️",n:"公共事業",t:"道路・公園・橋など(資源配分)",cost:[8,16,24],e:[[-3,-1,0],[0,0,0],[5,2,0]]},
+ {k:"wel",i:"🏥",n:"社会保障",t:"生活保護・医療・介護(再分配)",cost:[8,16,24],e:[[-1,-3,-5],[0,0,0],[2,4,7]]},
+ {k:"edu",i:"🎓",n:"教育・子育て",t:"学校・保育・給食",cost:[8,16,24],e:[[-1,-2,-1],[0,0,0],[2,4,3]]},
+ {k:"dis",i:"🌊",n:"防災・環境",t:"堤防・ごみ処理・消防",cost:[8,16,24],e:[[0,-3,0],[0,0,0],[0,3,0]]}];
+let G;
+const ICONS=[["🌸","さくら"],["⚓","みなと"],["⛰️","やま"]];
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function fresh(name,icon){return{name:name||"ひかり市",icon:icon||0,scr:"start",y:0,econ:50,sat:50,fair:50,debt:100,res:20,ch:{res:1,corp:1,vat:1,pub:1,wel:1,edu:1,dis:1,bond:1},hist:[],last:null}}
+function amt(t,i,s){if(t.rev){const ef=.7+s.econ/166,b=t.rev[i];return Math.round(t.k==="vat"?b*(.85+.15*ef):b*ef)}return t.cost[i]}
+function calc(c,s){let rev=0,sp=0;TX.forEach(t=>rev+=amt(t,c[t.k],s));SP.forEach(t=>sp+=amt(t,c[t.k],s));
+ const intr=Math.round(s.debt*.03),bi=c.bond===2?25:0,bo=c.bond===0?Math.min(25,s.debt):0;
+ return{rev,sp,intr,bi,bo,net:rev+bi-sp-intr-bo}}
+function hints(c,al,ph,emer,k){const h=[];
+ if(emer)h.push("貯金が足りず緊急借入になりました。財政の見通しの悪さが市民の不安を呼びました。");
+ if(al===1)h.push(ph===0?"不況期に減税や歳出の増加で有効需要を支えました。フィスカル・ポリシーとして適切です。":"過熱期に増税や歳出の抑制で景気を冷ましました。フィスカル・ポリシーとして適切です。");
+ if(al===-1)h.push(ph===0?"不況期に増税や歳出削減をして、景気をさらに冷やしてしまいました。":"過熱期に減税や歳出の増加で、景気をさらに熱くしてしまいました。");
+ if(c.vat===2)h.push("消費税は間接税です。低所得者ほど所得に占める負担が重く(逆進性)、公平感が下がりました。");
+ if(c.vat===0)h.push("消費税を下げると逆進性はやわらぎますが、景気に左右されにくい安定した税収が減ります。");
+ if(c.res===2)h.push("住民税を重くして、所得の高い人ほど多く負担する垂直的公平に近づきました。ただし消費は冷えます。");
+ if(c.corp===2)h.push("法人課税が重く、企業の投資意欲が下がって景気にはマイナスでした。");
+ if(c.wel===2)h.push("社会保障を手厚くして、所得の再分配が進みました。");
+ if(c.pub===2)h.push("公共事業で公共財が整い、有効需要も生まれました。");
+ if(c.bond===2)h.push("市債(公債)の発行で今年の収入は増えましたが、将来の返済負担が残ります。");
+ if(c.bond===0&&k.bo>0)h.push("市債を返して、将来の負担を軽くしました。");
+ return h.slice(0,3)}
+function decide(){
+ if(G.scr!=="play")return;
+ const ph=SEQ[G.y],c=G.ch,k=calc(c,G);
+ let pol=0,ds=0,df=0;
+ TX.concat(SP).forEach(t=>{const e=t.e[c[t.k]];pol+=e[0];ds+=e[1];df+=e[2]});
+ const shock=SHOCK[ph],drift=Math.round((50-G.econ)*.15);
+ let econ=cl(G.econ+shock+pol+drift),res=G.res+k.net,debt=G.debt+k.bi-k.bo,emer=false;
+ if(res<0){debt+=-res;res=0;emer=true;ds-=5}
+ const pen=debt>=220?6:debt>=160?3:debt>=130?1:0;
+ ds-=pen;if(pen)econ=cl(econ-Math.round(pen/2));
+ if(econ>68)ds-=Math.round((econ-68)/3);
+ if(econ<38)ds-=Math.round((38-econ)/3);
+ const lv=a=>a.reduce((s,t)=>s+c[t.k],0),stim=(lv(SP)-4)-(lv(TX)-3);
+ let al=0;
+ if(ph===0)al=stim>=1?1:stim<=-1?-1:0;
+ if(ph===2)al=stim<=-1?1:stim>=1?-1:0;
+ const before={econ:G.econ,sat:G.sat,fair:G.fair,debt:G.debt,res:G.res};
+ G.econ=econ;G.sat=cl(G.sat+ds);G.fair=cl(G.fair+df);G.debt=debt;G.res=res;
+ G.hist.push({ph,al});
+ G.last={before,after:{econ:G.econ,sat:G.sat,fair:G.fair,debt:G.debt,res:G.res},shock,pol:pol+drift,k,h:hints(c,al,ph,emer,k)};
+ G.scr="result";show()}
+const dots=()=>`<div class="dots">${[0,1,2,3,4].map(i=>`<i class="${i<G.y||(G.scr!=="play"&&i===G.y&&G.scr!=="start")?"d":i===G.y?"c":""}"></i>`).join("")}</div>`;
+const head=()=>`<div class="top"><span>${ICONS[G.icon][0]} ${esc(G.name)}の市長</span>${dots()}<span>第${G.y+1}年 / 5年</span></div>`;
+const face=v=>v>=70?"😄":v>=50?"🙂":v>=30?"😐":"😟";
+function stat(n,v,ic,sub,c){return`<div class="st"><div class="ring" style="--p:${v};--c:${c||"var(--acc)"}"><span>${ic}</span></div><div><span class="n">${n}</span><b>${sub||v}</b></div></div>`}
+function stats(s){return`<div class="stats">${stat("景気",s.econ,"🏙️",s.econ)}${stat("市民の満足度",s.sat,face(s.sat),s.sat)}${stat("税の公平感",s.fair,"⚖️",s.fair)}${stat("市債の残高(借金)",Math.min(100,Math.round(s.debt/3)),"💰",s.debt+"億<em>貯金"+s.res+"億</em>","var(--gold)")}</div>`}
+const cloud=(x,y,c)=>`<g fill="${c}"><circle cx="${x}" cy="${y}" r="14"/><circle cx="${x+16}" cy="${y-6}" r="17"/><circle cx="${x+34}" cy="${y}" r="14"/><rect x="${x}" y="${y}" width="34" height="14"/></g>`;
+function scene(){
+ const ph=SEQ[G.y],e=G.econ,R=[.7,1,.6,.9,.8,1,.65,.95,.75,.85],cs=["#c9d0d4","#bfe6f7","#ffe0b0"][ph],tp=["#8d99a3","#6cc1ea","#f4a65a"][ph];
+ let v=`<svg viewBox="0 0 640 160" role="img" aria-label="まちの様子"><defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${tp}"/><stop offset="1" stop-color="${cs}"/></linearGradient></defs><rect width="640" height="160" fill="url(#sk)"/>`;
+ v+=ph===0?cloud(290,30,"#6b7680")+cloud(430,26,"#6b7680"):`<circle cx="570" cy="30" r="${ph===2?26:18}" fill="${ph===2?"#ff7a1a":"#ffd54a"}"/>`;
+ if(G.debt>=160)v+=cloud(490,44,"#4a4f57");
+ const ic=G.icon,ok=G.sat>=40,XS=[40,150,260,370,480].slice(0,Math.round(G.sat/20));
+ if(ic===2)v+=`<polygon points="-10,135 100,52 190,118 270,38 390,135" fill="#8aa0b0"/><polygon points="290,135 420,68 530,135" fill="#9db1be"/><polygon points="560,135 620,84 660,135" fill="#8aa0b0"/><g fill="#fff"><polygon points="270,38 251,63 270,57 285,66"/><polygon points="100,52 85,72 100,67 113,76"/><polygon points="420,68 405,87 420,81 434,90"/></g>`;
+ R.forEach((m,i)=>{const h=Math.round(22+e*.75*m),x=14+i*62,y=135-h;
+  v+=`<rect x="${x}" y="${y}" width="46" height="${h}" rx="3" fill="${["#4f6d7a","#5b7c99","#6c8ea4"][i%3]}"/>`;
+  for(let r=0;r<Math.floor(h/20);r++)for(let c=0;c<2;c++)v+=`<rect x="${x+8+c*20}" y="${y+7+r*20}" width="10" height="10" fill="${e>=35?"#ffe28a":"#7d8a93"}"/>`});
+ if(G.scr==="play"&&G.ch.pub===2)v+=`<path d="M600 135V45H545M600 45l22 16" stroke="#e0a526" stroke-width="4" fill="none"/>`;
+ if(ic===1){v+=`<rect y="135" width="640" height="25" fill="${ok?"#3f8fc4":"#7f97a6"}"/><path d="M0 148q16-6 32 0${"t32 0".repeat(19)}" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>`;
+  XS.forEach(x=>v+=`<path d="M${x-14} 143h28l-6 10h-16z" fill="#c9482f"/><path d="M${x} 141V124l13 17z" fill="#fff"/>`)}
+ else{v+=`<rect y="135" width="640" height="25" fill="${ok?"#6fbf73":"#a3a98f"}"/>`;
+  XS.forEach(x=>v+=ic===0?`<rect x="${x-2}" y="139" width="4" height="12" fill="#7a5a3a"/><circle cx="${x}" cy="136" r="11" fill="${ok?"#f4a7c0":"#c9b2b2"}"/><circle cx="${x+8}" cy="141" r="8" fill="${ok?"#f7bfd1":"#d6c4c4"}"/>`:`<rect x="${x-2}" y="144" width="4" height="8" fill="#7a5a3a"/><polygon points="${x-10},147 ${x},120 ${x+10},147" fill="${ok?"#2f7d46":"#7d8a6a"}"/>`);
+  if(ic===0&&ok)[[120,56],[215,84],[335,46],[425,92],[525,64],[60,104]].forEach(q=>v+=`<ellipse cx="${q[0]}" cy="${q[1]}" rx="4" ry="2.5" fill="#ffc2d6"/>`)}
+ const nm=esc(G.name);return v+`<rect x="8" y="8" width="${Math.min(300,[...G.name].length*19+52)}" height="32" rx="16" fill="#fff" fill-opacity=".85"/><text x="22" y="32" font-size="20">${ICONS[G.icon][0]}</text><text x="52" y="31" font-size="17" font-weight="900" fill="#16302c">${nm}</text></svg>`}
+function radar(v){const c=110,r=80,P=(f,i)=>(c+r*f*Math.cos(-Math.PI/2+i*Math.PI/2)).toFixed(1)+","+(c+r*f*Math.sin(-Math.PI/2+i*Math.PI/2)).toFixed(1),ring=f=>[0,1,2,3].map(i=>P(f,i)).join(" ");
+ const L=[["景気",110,12],["満足度",208,114],["財政",110,222],["公平感",12,114]];
+ return`<svg viewBox="0 0 220 230" width="280" role="img" aria-label="4つの指標のレーダーチャート"><polygon points="${ring(1)}" fill="none" stroke="var(--line)" stroke-width="2"/><polygon points="${ring(.5)}" fill="none" stroke="var(--line)"/><polygon points="${v.map((x,i)=>P(x/100,i)).join(" ")}" fill="var(--acc)" fill-opacity=".35" stroke="var(--acc)" stroke-width="3"/>${L.map(l=>`<text x="${l[1]}" y="${l[2]}" text-anchor="${l[1]>150?"end":l[1]<50?"start":"middle"}" font-size="12" font-weight="700" fill="var(--ink)">${l[0]}</text>`).join("")}</svg>`}
+function row(t,labels,tag){return`<div class="row"><div class="rn"><b>${t.i} ${t.n}</b><small>${t.t}</small></div><div class="seg">${labels.map((l,i)=>`<button data-a="set" data-k="${t.k}" data-v="${i}"${t.k==="bond"&&i===0&&G.debt===0?" disabled":""}>${l}<small>${t.k==="bond"?(i===0?"-"+Math.min(25,G.debt):i===1?"0":"+25")+"億":amt(t,i,G)+"億"}</small></button>`).join("")}</div></div>`}
+const VIEW={
+start:()=>`<div class="ctr"><h1>市長ゲーム</h1><p>あなたは人口10万人のまちの市長です。<br>毎年、税金の集め方と使い道を決めて、5年間まちを運営します。</p>
+<p><b>まちの名前</b><br><input id="nm" class="nm" maxlength="10" value="${esc(G.name)}" placeholder="ひかり市" autocomplete="off" aria-label="まちの名前"></p>
+<p><b>まちのシンボル</b></p><div class="ic">${ICONS.map((x,i)=>`<button data-a="pick" data-v="${i}" class="${i===G.icon?"on":""}" aria-pressed="${i===G.icon}"><span>${x[0]}</span>${x[1]}</button>`).join("")}</div>
+<div class="card" style="text-align:left;max-width:560px;margin:16px auto"><b>目標</b><ul><li>景気・満足度・公平感を高く保つ</li><li>借金をふやしすぎない</li><li>景気の波(不況・過熱)に合わせて政策を変える</li></ul><small>所要時間 約5分 / 正解は1つではありません</small></div>
+<button class="go" data-a="start">市長になる</button></div>`,
+play:()=>{const ph=SEQ[G.y];return head()+`<div class="phase p${ph}"><b>いまの景気は「${PH[ph][0]}」</b><span>${PH[ph][1]}</span></div>`+`<div class="scene" id="scene"></div>`+stats(G)+
+`<div class="cols"><section class="card"><h2>収入: 税金を決める</h2>${TX.map(t=>row(t,["低","標準","高"])).join("")}</section>
+<section class="card"><h2>支出: 使い道を決める</h2>${SP.map(t=>row(t,["少","標準","多"])).join("")}</section></div>
+<section class="card">${row({k:"bond",i:"📜",n:"市債(公債)",t:"借金で収入を補う / 返して減らす"},["返す","なし","発行"])}</section>
+<div class="bar"><div id="pv"></div><button class="go" data-a="decide">この予算で決定</button></div>`},
+result:()=>{const L=G.last,b=L.before,a=L.after,ph=SEQ[G.y];
+ const line=(n,x,y,u)=>{const d=y-x;return`<span>${n}</span><span>${x}${u} → <b>${y}${u}</b></span><b class="${d>0?"up":d<0?"dn":""}">${d>0?"+":""}${d}</b>`};
+ return head()+`<div class="scene">${scene()}</div><div class="card"><h2>第${G.y+1}年の結果(景気は${PH[ph][0]})</h2><div class="chg">${line("景気",b.econ,a.econ,"")}${line("満足度",b.sat,a.sat,"")}${line("公平感",b.fair,a.fair,"")}${line("借金",b.debt,a.debt,"億")}${line("貯金",b.res,a.res,"億")}</div>
+<p><small>景気の変化 = 景気の波 ${L.shock>0?"+":""}${L.shock} と あなたの政策・回復力 ${L.pol>0?"+":""}${L.pol}<br>収支 ${L.k.net>0?"+":""}${L.k.net}億円(収入${L.k.rev+L.k.bi}億 − 支出${L.k.sp+L.k.intr+L.k.bo}億。うち利払い${L.k.intr}億)</small></p></div>
+<div class="card"><h2>ふりかえり</h2><ul>${L.h.length?L.h.map(x=>`<li>${x}</li>`).join(""):"<li>標準的な運営でした。景気に合わせて政策を変えると、効果が見えてきます。</li>"}</ul></div>
+<div class="ctr" style="padding-top:0"><button class="go" data-a="next">${G.y>=4?"通信簿を見る":"第"+(G.y+2)+"年へ進む"}</button></div>`},
+final:()=>{const fin=cl(Math.round(100-G.debt*.4+G.res*.2)),avg=Math.round((G.econ+G.sat+G.fair+fin)/4);
+ const g=avg>=75?esc(G.name)+"の名市長":avg>=62?"信頼される市長":avg>=48?"評価が割れる市長":"再選は厳しい市長";
+ const good=G.hist.filter(h=>h.al===1).length,tot=G.hist.filter(h=>h.ph!==1).length;
+ return`<div class="ctr"><small>${ICONS[G.icon][0]} ${esc(G.name)} 5年間の通信簿</small><h1>${g}</h1><div class="big">${avg}点</div></div>
+<div class="card rd">${radar([G.econ,G.sat,fin,G.fair])}</div><div class="stats">${stat("景気",G.econ,"🏙️")}${stat("満足度",G.sat,face(G.sat))}${stat("公平感",G.fair,"⚖️")}${stat("財政の健全さ",fin,"💰","","var(--gold)")}</div>
+<div class="card"><h2>フィスカル・ポリシーの成績</h2><p>景気の波に合った財政政策ができた年: <b>${good} / ${tot}年</b><br><small>不況期は減税・歳出増、過熱期は増税・歳出減が目安です</small></p></div>
+<div class="card"><h2>話し合ってみよう</h2><ul><li>税収を増やしたとき、どの数字が下がりましたか。それはなぜですか。</li><li>直接税と間接税、あなたのまちではどちらを重くしましたか。公平だといえますか。</li><li>不況のときに増税しにくいのはなぜでしょう。借金に頼ると何が起こりますか。</li></ul></div>
+<div class="ctr"><button class="go" data-a="again">もう一度挑戦する</button></div>`}};
+function paintPlay(){const c=G.ch;
+ document.querySelectorAll('[data-a="set"]').forEach(b=>{const on=c[b.dataset.k]===+b.dataset.v;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
+ const k=calc(c,G),short=G.res+k.net<0;
+ const inc=k.rev+k.bi,out=k.sp+k.intr+k.bo,m=Math.max(inc,out,1);$("#scene").innerHTML=scene();
+ $("#pv").innerHTML=`今年の予想収支 <b class="${k.net<0?"neg":"pos"}">${k.net>0?"+":""}${k.net}億円</b><div class="bl"><span>収入 ${inc}億</span></div><div class="bb bi" style="width:${Math.round(inc/m*100)}%"></div><div class="bl"><span>支出 ${out}億(利払い${k.intr}億を含む)</span></div><div class="bb bo" style="width:${Math.round(out/m*100)}%"></div>${short?'<br><small class="neg">貯金が足りません。緊急借入になり満足度が下がります。</small>':""}`}
+function show(){$("#app").innerHTML=VIEW[G.scr]();if(G.scr==="play")paintPlay();window.scrollTo(0,0)}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b||b.disabled)return;const a=b.dataset.a;
+ if(a==="pick"&&G.scr==="start"){G.icon=+b.dataset.v;document.querySelectorAll('[data-a="pick"]').forEach(x=>{const on=+x.dataset.v===G.icon;x.classList.toggle("on",on);x.setAttribute("aria-pressed",on)})}
+ else if(a==="start"&&G.scr==="start"){const inp=$("#nm"),n=(inp&&inp.value||"").trim().slice(0,10);G.name=n||"ひかり市";G.scr="play";show()}
+ else if(a==="set"&&G.scr==="play"){G.ch[b.dataset.k]=+b.dataset.v;paintPlay()}
+ else if(a==="decide")decide();
+ else if(a==="next"&&G.scr==="result"){if(G.y>=4)G.scr="final";else{G.y++;G.scr="play";if(G.debt===0&&G.ch.bond===0)G.ch.bond=1}show()}
+ else if(a==="again"){G=fresh(G.name,G.icon);show()}});
+G=fresh();show();
+</script></body></html>
